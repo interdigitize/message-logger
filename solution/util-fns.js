@@ -13,8 +13,8 @@ module.exports = {
 			return a.date - b.date;
 		});
 	},
-  addEntryToPrint: (printQueue, candidates) => {
-    printQueue.push(candidates.shift());
+  addEntryToPrint: (queue, candidatePool) => {
+    queue.push(candidatePool.shift());
   },
   printFromQueue: (queue, printer) => {
     queue.forEach(logEntry => {
@@ -24,8 +24,8 @@ module.exports = {
       }
     });
   },
-  confirmLogsAreEmpty: (logSources) => {
-  	logSources.map( (logEntry, index) => {
+  confirmLogsAreEmpty: (logs) => {
+  	logs.map( (logEntry, index) => {
   		if (logEntry.drained) {
   			return console.log(`Everything logged in logSource ${index + 1}`);
   		}
