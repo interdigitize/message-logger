@@ -13,7 +13,7 @@ module.exports = (logSources, printer) => {
   console.log('----------------ASYNC-----------------')
 	var printQueue = [];
 	var printCandidatesPromises = [];
-	var printCandidates = []
+	var printCandidates = [];
 	var moreToPrint = true;
 
 		function logAsync(){
@@ -22,13 +22,13 @@ module.exports = (logSources, printer) => {
 			})
 			Promise.all(printCandidatesPromises)
 			.then((candidates) => {
-				candidates.forEach(logEntry => {
+				candidates.forEach(logEntry => { //looking at refactoring this to eliminate one of the O(n) operations
 					if(logEntry) {
 						printCandidates.push(logEntry)
 						printCandidatesPromises.shift();
 					}
 				})
-				sortCandidates(printCandidates);
+				sortCandidates(printCandidates); //considering a linkedList instead to avoid sorts
 				return printCandidates;
 			})
 			.then( printCandidates => {
@@ -37,7 +37,7 @@ module.exports = (logSources, printer) => {
 					printer.done()
 					return confirmLogsAreEmpty(logSources);
 				}
-					addEntryToPrint(printQueue, printCandidates);//this is a bottleneck to refactor
+					addEntryToPrint(printQueue, printCandidates);
 					printFromQueue(printQueue, printer);
 			})
 			.then(() => {
@@ -47,6 +47,6 @@ module.exports = (logSources, printer) => {
 			})
 			.catch( err => console.log(err));
 		}
-		
+
 		logAsync();
 }
